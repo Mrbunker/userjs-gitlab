@@ -16,9 +16,7 @@ const handleMenu = (show: boolean) => {
   >
     helper
     <svg class="caret-down">
-      <use
-        xlink:href="/assets/icons-09fdf2c02921bad2ec7257465016a755f359ab7b598e5fe42c22381fe1a25045.svg#angle-down"
-      ></use>
+      <!-- <use xlink:href="/assets/icons-09fdf2c02921bad2ec7257465016a755f359ab7b598e5fe42c22381fe1a25045.svg#angle-down" /> -->
     </svg>
   </a>
 

@@ -7,12 +7,13 @@ const { handleMenu } = defineProps<{
   handleMenu: (show: boolean) => void;
 }>();
 
-const modalShow = ref(false);
+const dialogShow = ref(false);
 
-const handleDialog = () => {
+const handleOpenDialog = () => {
+  window.vue_mr_dialog.showModal();
   handleMenu(false);
-  modalShow.value = !modalShow.value;
 };
+const handleDialogClose = () => {};
 </script>
 
 <template>
@@ -23,7 +24,7 @@ const handleDialog = () => {
   >
     <ul>
       <li>
-        <button type="button" class="btn menu-item" @click="handleDialog">
+        <button type="button" class="btn menu-item" @click="handleOpenDialog">
           create merge request
         </button>
       </li>
@@ -32,5 +33,8 @@ const handleDialog = () => {
       </li>
     </ul>
   </div>
-  <MergeRequestModal :open="modalShow" :handleClose="handleDialog" />
+  <MergeRequestModal
+    :open="dialogShow"
+    :handleCloseDialog="handleDialogClose"
+  />
 </template>

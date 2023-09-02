@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{ autofocus?: boolean; label: string }>();
+defineProps<{ autofocus?: boolean; label: string; modelValue: string }>();
+
+defineEmits(["update:modelValue"]);
 </script>
 
 <template>
@@ -7,11 +9,15 @@ defineProps<{ autofocus?: boolean; label: string }>();
     <label class="label-bold"
       ><span>{{ label }}</span>
     </label>
+    <!-- placeholder="My awesome project" -->
     <input
-      placeholder="My awesome project"
       class="form-control input-lg"
       :autofocus="autofocus"
       type="text"
+      :value="modelValue"
+      @input="
+        $emit('update:modelValue', ($event.target as HTMLInputElement).value)
+      "
     />
   </div>
 </template>
