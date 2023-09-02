@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { unsafeWindow } from "$";
 import LabInput from "./LabInput.vue";
 
+defineProps<{ open: boolean }>();
 const project = ref("");
 const sourceBranch = ref("");
 const targetBranch = ref("");
-defineProps<{
-  open: boolean;
-}>();
 
-const handleCancel = () => window.vue_mr_dialog.close();
+const handleCancel = () => unsafeWindow.vue_mr_dialog.close();
 const handleConfirm = (event: Event) => {
   console.log("|event", event);
   return;
-  window.open("", "_blank");
+  unsafeWindow.open("", "_blank");
 };
 </script>
 
