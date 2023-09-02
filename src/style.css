@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.tw-modal-box {
+  border-radius: 0;
+}
+.tw-select {
+  border-color: #c4c4c4;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+}
+.tw-select:focus {
+  outline-color: #80bdff;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
