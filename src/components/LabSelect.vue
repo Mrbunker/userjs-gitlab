@@ -12,7 +12,7 @@ defineProps<{
     <label class="label-bold"
       ><span>{{ title }}</span>
     </label>
-    <select className="tw-select tw-w-full tw-max-w-xs tw-block">
+    <select class="tw-select tw-w-full tw-max-w-xs tw-block">
       <!-- <option value="" disabled selected>
         select {{ title.toLocaleLowerCase() }}：
       </option> -->

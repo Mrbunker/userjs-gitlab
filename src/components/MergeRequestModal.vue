@@ -30,10 +30,10 @@ onMounted(async () => {
   <dialog
     id="vue_mr_dialog"
     @submit="handleConfirm"
-    className="tw-modal  tw-bg-black tw-bg-opacity-60"
+    class="tw-modal tw-bg-black tw-bg-opacity-60"
   >
-    <form method="dialog" className="tw-modal-box tw-w-11/12 tw-max-w-5xl">
-      <h3 className="tw-font-bold tw-text-lg  tw-mb-5">create merge request</h3>
+    <form method="dialog" class="tw-modal-box tw-w-11/12 tw-max-w-5xl">
+      <h3 class="tw-font-bold tw-text-lg tw-mb-5">create merge request</h3>
 
       <LabInput v-model="project" title="Project" autofocus />
       <LabInput v-model="targetBranch" title="target branch" />
@@ -45,11 +45,9 @@ onMounted(async () => {
         label-key="name"
       />
 
-      <div className="tw-modal-action">
-        <button type="button" className="btn" @click="handleCancel">
-          cancel
-        </button>
-        <button type="submit" className="btn btn-success">confirm</button>
+      <div class="tw-modal-action">
+        <button type="button" class="btn" @click="handleCancel">cancel</button>
+        <button type="submit" class="btn btn-success">confirm</button>
       </div>
     </form>
   </dialog>

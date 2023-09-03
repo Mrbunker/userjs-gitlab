@@ -36,6 +36,6 @@ const handleDialogClose = () => {};
   </div>
   <MergeRequestModal
     :open="dialogShow"
-    :handleCloseDialog="handleDialogClose"
+    :handle-close-dialog="handleDialogClose"
   />
 </template>

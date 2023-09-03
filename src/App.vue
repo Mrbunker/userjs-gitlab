@@ -22,7 +22,7 @@ const handleMenu = (show: boolean) => {
     </svg>
   </a>
 
-  <HelperMenu :open="menuShow" :handleMenu="handleMenu" />
+  <HelperMenu :open="menuShow" :handle-menu="handleMenu" />
 </template>
 
 <style scoped></style>
