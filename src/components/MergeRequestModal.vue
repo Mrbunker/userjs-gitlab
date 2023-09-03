@@ -3,8 +3,10 @@ import { onMounted, ref } from "vue";
 import { unsafeWindow } from "$";
 import { listAllProjects } from "@/api/project";
 import LabInput from "./LabInput.vue";
+import LabSelect from "./LabSelect.vue";
 
 defineProps<{ open: boolean }>();
+const starredPorjects = ref<{ id: string; name: string }[]>([]);
 const project = ref("");
 const sourceBranch = ref("");
 const targetBranch = ref("");
@@ -20,7 +22,7 @@ onMounted(async () => {
   const res = await listAllProjects({
     starred: true,
   });
-  console.log("|res", res);
+  starredPorjects.value = res;
 });
 </script>
 
@@ -33,18 +35,15 @@ onMounted(async () => {
     <form method="dialog" className="tw-modal-box tw-w-11/12 tw-max-w-5xl">
       <h3 className="tw-font-bold tw-text-lg  tw-mb-5">create merge request</h3>
 
-      <LabInput v-model="project" label="Project" autofocus />
-      <LabInput v-model="targetBranch" label="target branch" />
-      <LabInput v-model="sourceBranch" label="source branch" />
-
-      <select className="tw-select tw-w-full tw-max-w-xs" placeholder="select ">
-        <option value="" disabled>请选择</option>
-        <option value="Homer">Homer</option>
-        <option value="Marge">Marge</option>
-        <option value="Bart">Bart</option>
-        <option value="Lisa">Lisa</option>
-        <option value="Maggie">Maggie</option>
-      </select>
+      <LabInput v-model="project" title="Project" autofocus />
+      <LabInput v-model="targetBranch" title="target branch" />
+      <LabInput v-model="sourceBranch" title="source branch" />
+      <LabSelect
+        title="Project"
+        :options="starredPorjects"
+        value-key="id"
+        label-key="name"
+      />
 
       <div className="tw-modal-action">
         <button type="button" className="btn" @click="handleCancel">

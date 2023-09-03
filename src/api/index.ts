@@ -6,7 +6,11 @@ async function get(api: string, params?: Record<string, any>): Promise<any> {
     const url = params
       ? `${baseApi}?${new URLSearchParams(params).toString()}`
       : baseApi;
-    console.log(`%cget ${api}`, "background: #007ACC; color: white;", params);
+    console.log(
+      `%cget[request] ${api}`,
+      "background: #007ACC; color: white;",
+      params,
+    );
 
     const response = await fetch(url, {
       method: "GET",
@@ -20,6 +24,11 @@ async function get(api: string, params?: Record<string, any>): Promise<any> {
     }
 
     const data = await response.json();
+    console.log(
+      `%cget[response] ${api}`,
+      "background: #17964B; color: white;",
+      data,
+    );
     return data;
   } catch (error) {
     console.error("GET request error:", error);
