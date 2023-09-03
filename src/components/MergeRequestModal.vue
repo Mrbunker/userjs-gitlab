@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { unsafeWindow } from "$";
+import { listAllProjects } from "@/api/project";
 import LabInput from "./LabInput.vue";
 
 defineProps<{ open: boolean }>();
@@ -14,6 +15,13 @@ const handleConfirm = (event: Event) => {
   return;
   unsafeWindow.open("", "_blank");
 };
+
+onMounted(async () => {
+  const res = await listAllProjects({
+    starred: true,
+  });
+  console.log("|res", res);
+});
 </script>
 
 <template>
