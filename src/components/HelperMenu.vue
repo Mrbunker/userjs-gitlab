@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { unsafeWindow } from "$";
 import MergeRequestModal from "./MergeRequestModal.vue";
 
@@ -7,8 +6,6 @@ const { handleMenu } = defineProps<{
   open: boolean;
   handleMenu: (show: boolean) => void;
 }>();
-
-const dialogShow = ref(false);
 
 const handleOpenDialog = () => {
   unsafeWindow.vue_mr_dialog.showModal();
@@ -34,8 +31,5 @@ const handleDialogClose = () => {};
       </li>
     </ul>
   </div>
-  <MergeRequestModal
-    :open="dialogShow"
-    :handle-close-dialog="handleDialogClose"
-  />
+  <MergeRequestModal :handle-close-dialog="handleDialogClose" />
 </template>

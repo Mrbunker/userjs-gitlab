@@ -33,5 +33,3 @@ defineEmits(["update:modelValue"]);
     </select>
   </div>
 </template>
-
-<style scoped></style>

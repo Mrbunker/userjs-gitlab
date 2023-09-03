@@ -1,5 +1,7 @@
 const baseUrl = "http://gitlab.shxgroup.net/api/v4";
 
+const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
+
 async function get(api: string, params?: Record<string, any>): Promise<any> {
   try {
     const baseApi = baseUrl + api;
@@ -16,6 +18,7 @@ async function get(api: string, params?: Record<string, any>): Promise<any> {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "PRIVATE-TOKEN": ACCESS_TOKEN,
       },
     });
 
@@ -43,6 +46,7 @@ async function post(api: string, body: Record<string, any>): Promise<any> {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "PRIVATE-TOKEN": ACCESS_TOKEN,
       },
       body: JSON.stringify(body),
     });

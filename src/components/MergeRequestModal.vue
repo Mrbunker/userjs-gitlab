@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, watchEffect } from "vue";
+import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import { unsafeWindow } from "$";
 import { listAllProjects } from "@/api/project";
 import { listRepositoryBranches, createMergeRequest } from "@/api/branch";
@@ -13,7 +13,6 @@ type Branchs = {
   commit: { id: string; message: string; title: string };
 }[];
 
-defineProps<{ open: boolean }>();
 const starredPorjects = ref<{ id: string; name: string }[]>([]);
 const sourceBranchOptions = ref<Branchs>([]);
 
@@ -23,30 +22,22 @@ const targetBranch = ref("");
 const mrTitle = ref("");
 
 const handleCancel = () => unsafeWindow.vue_mr_dialog.close();
-const handleConfirm = () => {
-  createMergeRequest(project.value, {
+const handleConfirm = async () => {
+  const res = await createMergeRequest(project.value, {
     source_branch: sourceBranch.value,
     target_branch: targetBranch.value,
     title: mrTitle.value,
   });
-  return;
-  unsafeWindow.open("", "_blank");
+  window.location.href = res.web_url;
 };
 
-const debug = () => {
-  // console.log("starredPorjects", starredPorjects.value);
-  // console.log("sourceBranchs", sourceBranchOptions.value);
-  console.log("project", project.value);
-  console.log("sourceBranch", sourceBranch.value);
-  console.log("targetBranch", targetBranch.value);
-};
-
-onMounted(async () => {
-  const res = await listAllProjects({
-    starred: true,
-  });
-  starredPorjects.value = res;
-});
+const confirmDisabled = computed(
+  () =>
+    !project.value ||
+    !sourceBranch.value ||
+    !targetBranch.value ||
+    !mrTitle.value,
+);
 
 const debouncedFetchBranches = debounce(async () => {
   if (!project.value || !sourceBranch.value) {
@@ -67,14 +58,17 @@ watchEffect(() => {
     mrTitle.value = foundBranch.commit.title;
   }
 });
+
+onMounted(async () => {
+  const res = await listAllProjects({
+    starred: true,
+  });
+  starredPorjects.value = res;
+});
 </script>
 
 <template>
-  <dialog
-    id="vue_mr_dialog"
-    @submit="handleConfirm"
-    class="tw-modal tw-bg-black tw-bg-opacity-60"
-  >
+  <dialog id="vue_mr_dialog" @submit="handleConfirm" class="tw-modal">
     <form method="dialog" class="tw-modal-box tw-w-6/12 tw-max-w-5xl">
       <h3 class="tw-font-bold tw-text-lg tw-mb-5">create merge request</h3>
       <LabSelect
@@ -100,8 +94,13 @@ watchEffect(() => {
 
       <div class="tw-modal-action">
         <button type="button" class="btn" @click="handleCancel">cancel</button>
-        <button type="button" class="btn" @click="debug">debug</button>
-        <button type="submit" class="btn btn-success">confirm</button>
+        <button
+          type="submit"
+          class="btn btn-success"
+          :disabled="confirmDisabled"
+        >
+          confirm
+        </button>
       </div>
 
       <datalist id="targetBranchOptions">

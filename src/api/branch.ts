@@ -7,6 +7,12 @@ export const listRepositoryBranches = async (
   return get(`/projects/${id}/repository/branches`, params);
 };
 
+interface MergeRequestRes {
+  web_url: string;
+  user: { can_merge: boolean };
+  id: number;
+  iid: number;
+}
 export const createMergeRequest = async (
   id: string,
   params: {
@@ -17,6 +23,6 @@ export const createMergeRequest = async (
     assignee_id?: string;
     assignee_ids?: string[];
   },
-) => {
+): Promise<MergeRequestRes> => {
   return post(`/projects/${id}/merge_requests`, params);
 };
