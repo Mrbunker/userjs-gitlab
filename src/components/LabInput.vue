@@ -4,6 +4,8 @@ defineProps<{
   title: string;
   modelValue: string;
   placeholder?: string;
+  list?: string;
+  disabled?: boolean;
 }>();
 
 defineEmits(["update:modelValue"]);
@@ -15,14 +17,16 @@ defineEmits(["update:modelValue"]);
       ><span>{{ title }}</span>
     </label>
     <input
-      class="form-control input-lg"
-      :autofocus="autofocus"
-      type="text"
-      :placeholder="placeholder"
       :value="modelValue"
+      :disabled="disabled"
+      :autofocus="autofocus"
+      :placeholder="placeholder"
+      :list="list"
+      type="text"
       @input="
         $emit('update:modelValue', ($event.target as HTMLInputElement).value)
       "
+      class="form-control input-lg"
     />
   </div>
 </template>

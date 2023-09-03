@@ -1,10 +1,14 @@
 <script setup lang="ts">
 defineProps<{
+  modelValue: string;
   title: string;
   options: any[];
   valueKey: string;
   labelKey: string;
+  disabled?: boolean;
 }>();
+
+defineEmits(["update:modelValue"]);
 </script>
 
 <template>
@@ -12,7 +16,14 @@ defineProps<{
     <label class="label-bold"
       ><span>{{ title }}</span>
     </label>
-    <select class="tw-select tw-w-full tw-max-w-xs tw-block">
+    <select
+      :disabled="disabled"
+      :value="modelValue"
+      @change="
+        $emit('update:modelValue', ($event.target as HTMLSelectElement).value)
+      "
+      class="tw-select tw-w-full tw-max-w-xs tw-block"
+    >
       <!-- <option value="" disabled selected>
         select {{ title.toLocaleLowerCase() }}：
       </option> -->

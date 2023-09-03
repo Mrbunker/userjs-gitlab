@@ -1,6 +1,6 @@
 import { get, post } from "@/api";
 
-interface Project {
+interface ProjectReq {
   starred?: boolean;
   search?: string;
   order_by?:
@@ -11,6 +11,6 @@ interface Project {
     | "updated_at"
     | "last_activity_at";
 }
-export const listAllProjects = async (params?: Project) => {
+export const listAllProjects = async (params?: ProjectReq) => {
   return get("/projects", params);
 };
