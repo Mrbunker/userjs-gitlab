@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { unsafeWindow } from "$";
+import CreateBranchModal from "./CreateBranchModal.vue";
 import MergeRequestModal from "./MergeRequestModal.vue";
 
 const { handleMenu } = defineProps<{
@@ -7,11 +8,15 @@ const { handleMenu } = defineProps<{
   handleMenu: (show: boolean) => void;
 }>();
 
-const handleOpenDialog = () => {
+const handleOpenMrDialog = () => {
   unsafeWindow.vue_mr_dialog.showModal();
   handleMenu(false);
 };
-const handleDialogClose = () => {};
+
+const handleOpenCbDialog = () => {
+  unsafeWindow.vue_cb_dialog.showModal();
+  handleMenu(false);
+};
 </script>
 
 <template>
@@ -22,14 +27,17 @@ const handleDialogClose = () => {};
   >
     <ul>
       <li>
-        <button type="button" class="btn menu-item" @click="handleOpenDialog">
-          create merge request
+        <button type="button" class="btn menu-item" @click="handleOpenMrDialog">
+          Create merge request
         </button>
       </li>
       <li>
-        <button type="button" class="btn menu-item">Set status</button>
+        <button type="button" class="btn menu-item" @click="handleOpenCbDialog">
+          Create branch
+        </button>
       </li>
     </ul>
   </div>
-  <MergeRequestModal :handle-close-dialog="handleDialogClose" />
+  <MergeRequestModal />
+  <CreateBranchModal />
 </template>

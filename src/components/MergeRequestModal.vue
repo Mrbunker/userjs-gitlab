@@ -6,6 +6,7 @@ import { listRepositoryBranches, createMergeRequest } from "@/api/branch";
 import { debounce, yyyyMMdd } from "@/lib/utils";
 import LabInput from "./LabInput.vue";
 import LabSelect from "./LabSelect.vue";
+import FormModal from "./FormModal.vue";
 
 type Branchs = {
   can_push: boolean;
@@ -36,7 +37,7 @@ const confirmDisabled = computed(
     !project.value ||
     !sourceBranch.value ||
     !targetBranch.value ||
-    !mrTitle.value,
+    !mrTitle.value
 );
 
 const debouncedFetchBranches = debounce(async () => {
@@ -52,7 +53,7 @@ watch([project, sourceBranch], () => debouncedFetchBranches());
 
 watchEffect(() => {
   const foundBranch = sourceBranchOptions.value.find(
-    ({ name }) => name === sourceBranch.value,
+    ({ name }) => name === sourceBranch.value
   );
   if (foundBranch) {
     mrTitle.value = foundBranch.commit.title;
@@ -68,58 +69,44 @@ onMounted(async () => {
 </script>
 
 <template>
-  <dialog id="vue_mr_dialog" @submit="handleConfirm" class="tw-modal">
-    <form method="dialog" class="tw-modal-box tw-w-6/12 tw-max-w-5xl">
-      <h3 class="tw-font-bold tw-text-lg tw-mb-5">create merge request</h3>
-      <LabSelect
-        v-model="project"
-        title="Project"
-        :options="starredPorjects"
-        value-key="id"
-        label-key="name"
-      />
-      <LabInput
-        v-model="sourceBranch"
-        title="source branch"
-        :disabled="project === ''"
-        list="sourceBranchOptions"
-      />
-      <LabInput
-        v-model="targetBranch"
-        title="target branch"
-        list="targetBranchOptions"
-        :disabled="project === ''"
-      />
-      <LabInput v-model="mrTitle" title="merge request title" />
+  <FormModal
+    dialogId="vue_mr_dialog"
+    modalTitle="create merge request"
+    :confirmDisabled="confirmDisabled"
+    @cancel="handleCancel"
+    @confirm="handleConfirm"
+  >
+    <LabSelect
+      v-model="project"
+      title="Project"
+      :options="starredPorjects"
+      value-key="id"
+      label-key="name"
+    />
+    <LabInput
+      v-model="sourceBranch"
+      title="source branch"
+      :disabled="project === ''"
+      list="sourceBranchOptions"
+    />
+    <LabInput
+      v-model="targetBranch"
+      title="target branch"
+      list="targetBranchOptions"
+      :disabled="project === ''"
+    />
+    <LabInput v-model="mrTitle" title="merge request title" />
 
-      <div class="tw-modal-action">
-        <button type="button" class="btn" @click="handleCancel">cancel</button>
-        <button
-          type="submit"
-          class="btn btn-success"
-          :disabled="confirmDisabled"
-        >
-          confirm
-        </button>
-      </div>
+    <datalist id="targetBranchOptions">
+      <option value="develop"></option>
+      <option value="cq-develop"></option>
+      <option value="master"></option>
+      <option value="cq-master"></option>
+      <option :value="`releases/${yyyyMMdd(new Date())}`"></option>
+    </datalist>
 
-      <datalist id="targetBranchOptions">
-        <option value="develop"></option>
-        <option value="cq-develop"></option>
-        <option value="master"></option>
-        <option value="cq-master"></option>
-        <option :value="`releases/${yyyyMMdd(new Date())}`"></option>
-      </datalist>
-
-      <datalist id="sourceBranchOptions">
-        <option v-for="item in sourceBranchOptions" :value="item.name"></option>
-      </datalist>
-    </form>
-  </dialog>
+    <datalist id="sourceBranchOptions">
+      <option v-for="item in sourceBranchOptions" :value="item.name"></option>
+    </datalist>
+  </FormModal>
 </template>
-
-<style scoped>
-dialog {
-  color: rgb(46, 46, 46);
-}
-</style>

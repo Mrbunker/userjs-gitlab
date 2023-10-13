@@ -7,6 +7,7 @@ export default {
   prefix: "tw-",
   plugins: [require("daisyui")],
   daisyui: {
+    logs: false,
     themes: [
       {
         mytheme: {
