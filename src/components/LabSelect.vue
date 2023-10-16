@@ -5,7 +5,6 @@ defineProps<{
   options: any[];
   valueKey: string;
   labelKey: string;
-  disabled?: boolean;
 }>();
 
 defineEmits(["update:modelValue"]);
@@ -17,12 +16,12 @@ defineEmits(["update:modelValue"]);
       ><span>{{ title }}</span>
     </label>
     <select
-      :disabled="disabled"
       :value="modelValue"
       @change="
         $emit('update:modelValue', ($event.target as HTMLSelectElement).value)
       "
       class="tw-select tw-w-full tw-max-w-xs tw-block"
+      v-bind="$attrs"
     >
       <!-- <option value="" disabled selected>
         select {{ title.toLocaleLowerCase() }}：

@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { unsafeWindow } from "$";
 import { listAllProjects } from "@/api/project";
+import { Projects } from "@/types";
 import CreateBranchModal from "./CreateBranchModal.vue";
 import MergeRequestModal from "./MergeRequestModal.vue";
 
@@ -10,7 +11,7 @@ const { handleMenu } = defineProps<{
   handleMenu: (show: boolean) => void;
 }>();
 
-const starredPorjects = ref<{ id: string; name: string }[]>([]);
+const starredPorjects = ref<Projects>([]);
 
 onMounted(async () => {
   starredPorjects.value = await listAllProjects({ starred: true });
@@ -25,6 +26,8 @@ const handleOpenCbDialog = () => {
   unsafeWindow.vue_cb_dialog.showModal();
   handleMenu(false);
 };
+
+const debug = () => {};
 </script>
 
 <template>
@@ -44,6 +47,11 @@ const handleOpenCbDialog = () => {
           Create branch
         </button>
       </li>
+      <!-- <li>
+        <button type="button" class="btn menu-item" @click="debug">
+          debug
+        </button>
+      </li> -->
     </ul>
   </div>
   <MergeRequestModal :starred-porjects="starredPorjects" />

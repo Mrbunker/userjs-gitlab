@@ -3,20 +3,16 @@ import { computed, ref, watch, watchEffect } from "vue";
 import { unsafeWindow } from "$";
 import { listRepositoryBranches, createMergeRequest } from "@/api/branch";
 import { debounce } from "@/lib/utils";
+import { Branchs, Projects } from "@/types";
 import dayjs from "dayjs";
 import LabInput from "./LabInput.vue";
 import LabSelect from "./LabSelect.vue";
 import FormModal from "./FormModal.vue";
+import BranchDataList from "./BranchDataList.vue";
 
 defineProps<{
-  starredPorjects: { id: string; name: string }[];
+  starredPorjects: Projects;
 }>();
-
-type Branchs = {
-  can_push: boolean;
-  name: string;
-  commit: { id: string; message: string; title: string };
-}[];
 
 const sourceBranchOptions = ref<Branchs>([]);
 
@@ -95,13 +91,10 @@ watchEffect(() => {
     />
     <LabInput v-model="mrTitle" title="merge request title" />
 
-    <datalist id="targetBranchOptions">
-      <option value="develop"></option>
-      <option value="cq-develop"></option>
-      <option value="master"></option>
-      <option value="cq-master"></option>
-      <option :value="`releases/${today}`"></option>
-    </datalist>
+    <BranchDataList
+      id="targetBranchOptions"
+      :more-options="[`releases/${today}`]"
+    />
 
     <datalist id="sourceBranchOptions">
       <option v-for="item in sourceBranchOptions" :value="item.name"></option>
