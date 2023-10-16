@@ -1,10 +1,3 @@
-export const yyyyMMdd = (date: Date) => {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  return `${year}${month}${day}`;
-};
-
 export const debounce = (func: Function, delay: number = 500) => {
   let timerId: number | null = null;
 
@@ -15,4 +8,15 @@ export const debounce = (func: Function, delay: number = 500) => {
 
     timerId = setTimeout(func, delay ?? 500);
   };
+};
+
+export const getUserName = () => {
+  const userDom = document.querySelector<HTMLAnchorElement>(
+    ".header-user-dropdown-toggle"
+  );
+  if (!userDom) {
+    return "";
+  }
+  const parts = userDom.href.split("/");
+  return parts[parts.length - 1];
 };

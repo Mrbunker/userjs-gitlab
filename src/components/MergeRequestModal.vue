@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
 import { unsafeWindow } from "$";
-import { listAllProjects } from "@/api/project";
 import { listRepositoryBranches, createMergeRequest } from "@/api/branch";
-import { debounce, yyyyMMdd } from "@/lib/utils";
+import { debounce } from "@/lib/utils";
+import dayjs from "dayjs";
 import LabInput from "./LabInput.vue";
 import LabSelect from "./LabSelect.vue";
 import FormModal from "./FormModal.vue";
+
+defineProps<{
+  starredPorjects: { id: string; name: string }[];
+}>();
 
 type Branchs = {
   can_push: boolean;
@@ -14,13 +18,14 @@ type Branchs = {
   commit: { id: string; message: string; title: string };
 }[];
 
-const starredPorjects = ref<{ id: string; name: string }[]>([]);
 const sourceBranchOptions = ref<Branchs>([]);
 
 const project = ref("");
 const sourceBranch = ref("");
 const targetBranch = ref("");
 const mrTitle = ref("");
+
+const today = dayjs().format("YYYYMMDD");
 
 const handleCancel = () => unsafeWindow.vue_mr_dialog.close();
 const handleConfirm = async () => {
@@ -59,19 +64,12 @@ watchEffect(() => {
     mrTitle.value = foundBranch.commit.title;
   }
 });
-
-onMounted(async () => {
-  const res = await listAllProjects({
-    starred: true,
-  });
-  starredPorjects.value = res;
-});
 </script>
 
 <template>
   <FormModal
     dialogId="vue_mr_dialog"
-    modalTitle="create merge request"
+    modalTitle="Create merge request"
     :confirmDisabled="confirmDisabled"
     @cancel="handleCancel"
     @confirm="handleConfirm"
@@ -102,7 +100,7 @@ onMounted(async () => {
       <option value="cq-develop"></option>
       <option value="master"></option>
       <option value="cq-master"></option>
-      <option :value="`releases/${yyyyMMdd(new Date())}`"></option>
+      <option :value="`releases/${today}`"></option>
     </datalist>
 
     <datalist id="sourceBranchOptions">
