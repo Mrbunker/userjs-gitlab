@@ -1,5 +1,5 @@
 import { get, post } from "@/api";
-import { event } from "@/types/index";
+import { Event, Pagination } from "@/types/index";
 
 type actionTypes =
   | "created"
@@ -25,7 +25,7 @@ export const getUserEvents = async (
     action?: actionTypes;
     target_type?: string;
     sort?: "asc " | "desc";
-  }
-): Promise<event[]> => {
+  } & Pagination
+): Promise<Event[]> => {
   return get(`/users/${id}/events`, params);
 };

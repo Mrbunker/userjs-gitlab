@@ -54,7 +54,10 @@ const debouncedFetchBranches = debounce(async () => {
 
 const fetchLatestPush = async () => {
   const username = import.meta.env.VITE_USER_NAME ?? getUserName();
-  const events = await getUserEvents(username, { action: "pushed" });
+  const events = await getUserEvents(username, {
+    action: "pushed",
+    per_page: 1,
+  });
   const { project_id, push_data } = events[0];
   project.value = String(project_id);
   if (push_data && !/^(Merge|Revert|removed)/.test(push_data.commit_title)) {

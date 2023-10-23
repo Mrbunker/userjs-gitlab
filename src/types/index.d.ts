@@ -1,3 +1,8 @@
+export type Pagination = {
+  page?: number;
+  per_page?: number;
+};
+
 export type Branchs = {
   can_push: boolean;
   name: string;
@@ -31,7 +36,7 @@ type PushData = {
   commit_title: string;
 };
 
-export type event = {
+export type Event = {
   title: string;
   project_id: number;
   action_name: string;
