@@ -31,7 +31,7 @@ const handleConfirm = async () => {
     target_branch: targetBranch.value,
     title: mrTitle.value,
   });
-  window.location.href = res.web_url;
+  window.location.href = res.web_url + `/diffs`;
 };
 
 const confirmDisabled = computed(
