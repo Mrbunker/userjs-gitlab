@@ -27,7 +27,7 @@ const handleCancel = () => unsafeWindow.vue_cb_dialog.close();
 const handleConfirm = async () => {
   try {
     await createRepositoryBranch(project.value, {
-      id: Number(project.value),
+      id: project.value,
       branch: branchName.value,
       ref: createFrom.value,
     });

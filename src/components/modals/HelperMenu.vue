@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { unsafeWindow } from "$";
-import { listAllProjects } from "@/api/project";
 import { Projects } from "@/types";
+import { listAllProjects } from "@/api/project";
 import CreateBranchModal from "@/components/modals/CreateBranchModal.vue";
 import MergeRequestModal from "@/components/modals/MergeRequestModal.vue";
 

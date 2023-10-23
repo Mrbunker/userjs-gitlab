@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from "vue";
+import { computed, onMounted, ref, watch, watchEffect } from "vue";
 import { unsafeWindow } from "$";
-import { listRepositoryBranches, createMergeRequest } from "@/api/branch";
-import { debounce } from "@/lib/utils";
-import { Branchs, Projects } from "@/types";
 import dayjs from "dayjs";
+import { listRepositoryBranches, createMergeRequest } from "@/api/branch";
+import { debounce, getUserName } from "@/lib/utils";
+import { getUserEvents } from "@/api/user";
+import { Branchs, Projects } from "@/types";
 import LabInput from "@/components/LabInput.vue";
 import LabSelect from "@/components/LabSelect.vue";
 import FormModal from "@/components/FormModal.vue";
@@ -50,6 +51,21 @@ const debouncedFetchBranches = debounce(async () => {
   });
   sourceBranchOptions.value = res;
 });
+
+const fetchLatestPush = async () => {
+  const username = import.meta.env.VITE_USER_NAME ?? getUserName();
+  const events = await getUserEvents(username, { action: "pushed" });
+  const { project_id, push_data } = events[0];
+  project.value = String(project_id);
+  if (push_data && !/^(Merge|Revert|removed)/.test(push_data.commit_title)) {
+    sourceBranch.value = String(push_data.ref);
+  }
+};
+
+onMounted(async () => {
+  fetchLatestPush();
+});
+
 watch([project, sourceBranch], () => debouncedFetchBranches());
 
 watchEffect(() => {
