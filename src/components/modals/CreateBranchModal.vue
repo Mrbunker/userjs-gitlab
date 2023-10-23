@@ -5,10 +5,10 @@ import dayjs from "dayjs";
 import { getUserName } from "@/lib/utils";
 import { createRepositoryBranch } from "@/api/branch";
 import { Projects } from "@/types";
-import FormModal from "./FormModal.vue";
-import LabInput from "./LabInput.vue";
-import LabSelect from "./LabSelect.vue";
-import BranchDataList from "./BranchDataList.vue";
+import FormModal from "@/components/FormModal.vue";
+import LabInput from "@/components/LabInput.vue";
+import LabSelect from "@/components/LabSelect.vue";
+import BranchDataList from "@/components/BranchDataList.vue";
 
 const { starredPorjects } = defineProps<{ starredPorjects: Projects }>();
 const project = ref("");

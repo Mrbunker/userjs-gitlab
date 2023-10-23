@@ -3,8 +3,8 @@ import { onMounted, ref } from "vue";
 import { unsafeWindow } from "$";
 import { listAllProjects } from "@/api/project";
 import { Projects } from "@/types";
-import CreateBranchModal from "./CreateBranchModal.vue";
-import MergeRequestModal from "./MergeRequestModal.vue";
+import CreateBranchModal from "@/components/modals/CreateBranchModal.vue";
+import MergeRequestModal from "@/components/modals/MergeRequestModal.vue";
 
 const { handleMenu } = defineProps<{
   open: boolean;
@@ -26,8 +26,6 @@ const handleOpenCbDialog = () => {
   unsafeWindow.vue_cb_dialog.showModal();
   handleMenu(false);
 };
-
-const debug = () => {};
 </script>
 
 <template>

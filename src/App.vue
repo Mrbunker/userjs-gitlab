@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
-import HelperMenu from "@/components/HelperMenu.vue";
+import HelperMenu from "@/components/modals/HelperMenu.vue";
 
 const menuShow = ref(false);
 const handleMenu = (show: boolean) => {

@@ -5,10 +5,10 @@ import { listRepositoryBranches, createMergeRequest } from "@/api/branch";
 import { debounce } from "@/lib/utils";
 import { Branchs, Projects } from "@/types";
 import dayjs from "dayjs";
-import LabInput from "./LabInput.vue";
-import LabSelect from "./LabSelect.vue";
-import FormModal from "./FormModal.vue";
-import BranchDataList from "./BranchDataList.vue";
+import LabInput from "@/components/LabInput.vue";
+import LabSelect from "@/components/LabSelect.vue";
+import FormModal from "@/components/FormModal.vue";
+import BranchDataList from "@/components/BranchDataList.vue";
 
 defineProps<{
   starredPorjects: Projects;
