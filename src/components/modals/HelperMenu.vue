@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { unsafeWindow } from "$";
+import { ref, onMounted } from "vue";
 import { Projects } from "@/types";
 import { listAllProjects } from "@/api/project";
 import CreateBranchModal from "@/components/modals/CreateBranchModal.vue";
@@ -12,19 +11,26 @@ const { handleMenu } = defineProps<{
 }>();
 
 const starredPorjects = ref<Projects>([]);
+const mrModalOpen = ref(false);
+const cbModalOpen = ref(false);
 
 onMounted(async () => {
   starredPorjects.value = await listAllProjects({ starred: true });
 });
 
 const handleOpenMrDialog = () => {
-  unsafeWindow.vue_mr_dialog.showModal();
+  mrModalOpen.value = true;
   handleMenu(false);
 };
-
 const handleOpenCbDialog = () => {
-  unsafeWindow.vue_cb_dialog.showModal();
+  cbModalOpen.value = true;
   handleMenu(false);
+};
+const handleCloseMrDialog = () => {
+  mrModalOpen.value = false;
+};
+const handleCloseCbDialog = () => {
+  cbModalOpen.value = false;
 };
 </script>
 
@@ -52,6 +58,17 @@ const handleOpenCbDialog = () => {
       </li> -->
     </ul>
   </div>
-  <MergeRequestModal :starred-porjects="starredPorjects" />
-  <CreateBranchModal :starred-porjects="starredPorjects" />
+
+  <MergeRequestModal
+    v-if="mrModalOpen"
+    :open="mrModalOpen"
+    @cancel="handleCloseMrDialog"
+    :starred-porjects="starredPorjects"
+  />
+  <CreateBranchModal
+    v-if="cbModalOpen"
+    :open="cbModalOpen"
+    @cancel="handleCloseCbDialog"
+    :starred-porjects="starredPorjects"
+  />
 </template>

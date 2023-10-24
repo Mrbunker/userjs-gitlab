@@ -13,7 +13,7 @@ export default defineConfig({
       userscript: {
         // name: "gitlab",
         author: "*",
-        version: "0.0.3",
+        version: "0.0.4",
         icon: "https://vitejs.dev/logo.svg",
         namespace: "npm/vite-plugin-monkey",
         match: ["*://*.gitlab.shxgroup.net/*"],

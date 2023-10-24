@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { GM_setClipboard, unsafeWindow } from "$";
+import { GM_setClipboard } from "$";
 import dayjs from "dayjs";
 import { getUserName } from "@/lib/utils";
 import { createRepositoryBranch } from "@/api/branch";
@@ -10,7 +10,12 @@ import LabInput from "@/components/LabInput.vue";
 import LabSelect from "@/components/LabSelect.vue";
 import BranchDataList from "@/components/BranchDataList.vue";
 
-const { starredPorjects } = defineProps<{ starredPorjects: Projects }>();
+const { starredPorjects } = defineProps<{
+  open: boolean;
+  starredPorjects: Projects;
+}>();
+const emit = defineEmits(["cancel"]);
+
 const project = ref("");
 const createFrom = ref("");
 const prifix = ref(`feature/`);
@@ -22,7 +27,7 @@ const branchName = computed(
 
 const confirmDisabled = computed(() => !createFrom.value || !prifix.value);
 
-const handleCancel = () => unsafeWindow.vue_cb_dialog.close();
+const handleCancel = () => emit("cancel");
 
 const handleConfirm = async () => {
   try {
@@ -36,20 +41,13 @@ const handleConfirm = async () => {
   }
   alert(`create branch ${branchName.value} success`);
   GM_setClipboard(branchName.value, "text");
-
-  // const projectInfo = starredPorjects.find(
-  //   (item) => item.id === Number(project.value)
-  // );
-  // if (!projectInfo) {
-  //   return;
-  // }
-  // const webUrl = projectInfo.web_url + `/tree/${branchName.value}`;
-  // window.location.href = webUrl;
+  emit("cancel");
 };
 </script>
 
 <template>
   <FormModal
+    :open="open"
     dialogId="vue_cb_dialog"
     modalTitle="Create branch"
     :confirmDisabled="confirmDisabled"
@@ -75,7 +73,7 @@ const handleConfirm = async () => {
     <LabInput v-model="branchName" title="branch name" />
 
     <datalist id="prefixOptions">
-      <option value="feature/#"></option>
+      <option value="feature/"></option>
       <option value="fix/"></option>
     </datalist>
 

@@ -1,11 +1,15 @@
 <script setup lang="ts">
-defineProps<{
+import { SelectHTMLAttributes } from "vue";
+
+// !todo https://github.com/vuejs/core/issues/8286
+interface Props extends /** @vue-ignore */ SelectHTMLAttributes {
   modelValue: string;
   title: string;
   options: any[];
   valueKey: string;
   labelKey: string;
-}>();
+}
+defineProps<Props>();
 
 defineEmits(["update:modelValue"]);
 </script>

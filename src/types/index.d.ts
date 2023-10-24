@@ -3,11 +3,12 @@ export type Pagination = {
   per_page?: number;
 };
 
-export type Branchs = {
+export type Branch = {
   can_push: boolean;
   name: string;
   commit: { id: string; message: string; title: string };
-}[];
+};
+export type Branches = Branch[];
 
 export type Projects = {
   archived: boolean;

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineProps({
+  open: Boolean,
   dialogId: String,
   modalTitle: String,
   confirmDisabled: Boolean,
@@ -8,7 +9,12 @@ const emit = defineEmits(["cancel", "confirm"]);
 </script>
 
 <template>
-  <dialog :id="dialogId" @submit="emit('confirm')" class="tw-modal">
+  <dialog
+    :id="dialogId"
+    @submit="emit('confirm')"
+    class="tw-modal"
+    :class="{ 'tw-modal-open': open }"
+  >
     <form method="dialog" class="tw-modal-box tw-w-6/12 tw-max-w-5xl">
       <h3 class="tw-font-bold tw-text-lg tw-mb-5">{{ modalTitle }}</h3>
       <slot></slot>

@@ -1,8 +1,13 @@
 <script setup lang="ts">
-defineProps<{
+import { InputHTMLAttributes } from "vue";
+
+// !todo https://github.com/vuejs/core/issues/8286
+interface Props extends /** @vue-ignore */ InputHTMLAttributes {
   title: string;
   modelValue: string;
-}>();
+  extra?: string;
+}
+defineProps<Props>();
 
 defineEmits(["update:modelValue"]);
 </script>
@@ -21,5 +26,7 @@ defineEmits(["update:modelValue"]);
       class="form-control input-lg"
       v-bind="$attrs"
     />
+    <div class="tw-text-info-content">{{ extra }}</div>
+    <slot />
   </div>
 </template>

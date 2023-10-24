@@ -1,37 +1,50 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, watchEffect } from "vue";
-import { unsafeWindow } from "$";
 import dayjs from "dayjs";
 import { listRepositoryBranches, createMergeRequest } from "@/api/branch";
 import { debounce, getUserName } from "@/lib/utils";
 import { getUserEvents } from "@/api/user";
-import { Branchs, Projects } from "@/types";
+import { Branches, Projects } from "@/types";
 import LabInput from "@/components/LabInput.vue";
 import LabSelect from "@/components/LabSelect.vue";
 import FormModal from "@/components/FormModal.vue";
 import BranchDataList from "@/components/BranchDataList.vue";
 
 defineProps<{
+  open: boolean;
   starredPorjects: Projects;
 }>();
+const emit = defineEmits(["cancel"]);
 
-const sourceBranchOptions = ref<Branchs>([]);
+const sourceBranchOptions = ref<Branches>([]);
 
 const project = ref("");
 const sourceBranch = ref("");
-const targetBranch = ref("");
+const targetBranchCache = JSON.parse(
+  localStorage.getItem("form_cache_mr") ?? "{}"
+)?.targetBranch;
+const targetBranch = ref(targetBranchCache);
 const mrTitle = ref("");
 
 const today = dayjs().format("YYYYMMDD");
 
-const handleCancel = () => unsafeWindow.vue_mr_dialog.close();
+const handleCancel = () => emit("cancel");
 const handleConfirm = async () => {
+  localStorage.setItem(
+    "form_cache_mr",
+    JSON.stringify({ targetBranch: targetBranch.value })
+  );
   const res = await createMergeRequest(project.value, {
     source_branch: sourceBranch.value,
     target_branch: targetBranch.value,
     title: mrTitle.value,
   });
+  emit("cancel");
   window.location.href = res.web_url + `/diffs`;
+};
+const handleProjectChange = (e: Event) => {
+  sourceBranch.value = "";
+  mrTitle.value = "";
 };
 
 const confirmDisabled = computed(
@@ -69,7 +82,7 @@ onMounted(async () => {
   fetchLatestPush();
 });
 
-watch([project, sourceBranch], () => debouncedFetchBranches());
+watch([sourceBranch], () => debouncedFetchBranches());
 
 watchEffect(() => {
   const foundBranch = sourceBranchOptions.value.find(
@@ -83,6 +96,7 @@ watchEffect(() => {
 
 <template>
   <FormModal
+    :open="open"
     dialogId="vue_mr_dialog"
     modalTitle="Create merge request"
     :confirmDisabled="confirmDisabled"
@@ -95,6 +109,7 @@ watchEffect(() => {
       :options="starredPorjects"
       value-key="id"
       label-key="name"
+      @change="handleProjectChange"
     />
     <LabInput
       v-model="sourceBranch"
@@ -109,7 +124,6 @@ watchEffect(() => {
       :disabled="project === ''"
     />
     <LabInput v-model="mrTitle" title="merge request title" />
-
     <BranchDataList
       id="targetBranchOptions"
       :more-options="[`releases/${today}`]"
