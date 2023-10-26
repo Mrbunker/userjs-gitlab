@@ -21,9 +21,14 @@ const createFrom = ref("");
 const prifix = ref(`feature/`);
 const userName = ref("-" + import.meta.env.VITE_USER_NAME ?? getUserName());
 const date = ref(dayjs().format("YYYY-MM-DD"));
-const branchName = computed(
-  () => `${prifix.value}${userName.value}-${dayjs(date.value).format("YYMMDD")}`
-);
+const branchName = computed(() => {
+  const today = dayjs(date.value);
+  if (prifix.value.includes("releases")) {
+    return `${prifix.value}${today.format("YYYYMMDD")}`;
+  } else {
+    return `${prifix.value}${userName.value}-${today.format("YYMMDD")}`;
+  }
+});
 
 const confirmDisabled = computed(() => !createFrom.value || !prifix.value);
 
@@ -74,7 +79,8 @@ const handleConfirm = async () => {
 
     <datalist id="prefixOptions">
       <option value="feature/"></option>
-      <option value="fix/"></option>
+      <option value="hotfix/"></option>
+      <option value="releases/"></option>
     </datalist>
 
     <BranchDataList id="createFromOptions" />

@@ -6,14 +6,17 @@ defineProps({
   confirmDisabled: Boolean,
 });
 const emit = defineEmits(["cancel", "confirm"]);
+
+const onEscPress = () => emit("cancel");
 </script>
 
 <template>
   <dialog
     :id="dialogId"
-    @submit="emit('confirm')"
     class="tw-modal"
     :class="{ 'tw-modal-open': open }"
+    @keyup.esc="onEscPress"
+    @submit="emit('confirm')"
   >
     <form method="dialog" class="tw-modal-box tw-w-6/12 tw-max-w-5xl">
       <h3 class="tw-font-bold tw-text-lg tw-mb-5">{{ modalTitle }}</h3>
