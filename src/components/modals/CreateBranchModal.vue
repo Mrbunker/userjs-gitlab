@@ -42,7 +42,7 @@ const handleConfirm = async () => {
       ref: createFrom.value,
     });
   } catch (error) {
-    return;
+    return alert(error);
   }
   alert(`create branch ${branchName.value} success`);
   GM_setClipboard(branchName.value, "text");
