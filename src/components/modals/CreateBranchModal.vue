@@ -30,7 +30,7 @@ const branchName = computed(() => {
   }
 });
 
-const confirmDisabled = computed(() => !createFrom.value || !prifix.value);
+const confirmDisabled = computed(() => !createFrom.value);
 
 const handleCancel = () => emit("cancel");
 
@@ -74,8 +74,8 @@ const handleConfirm = async () => {
     />
     <LabInput v-model="prifix" title="prifix" list="prefixOptions" autofocus />
     <LabInput v-model="userName" title="user" hidden />
-    <LabInput v-model="date" title="date" type="date" hidden />
-    <LabInput v-model="branchName" title="branch name" />
+    <LabInput v-model="date" title="date" type="date" />
+    <LabInput v-model="branchName" title="branch name" readonly />
 
     <datalist id="prefixOptions">
       <option value="feature/"></option>
